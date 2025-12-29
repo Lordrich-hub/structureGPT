@@ -47,7 +47,9 @@ export function RiskCalculator() {
     const pipValuePerLot = (pipSize / entry) * 100000;
     const dollarRiskPerLot = pipsAtRisk * pipValuePerLot;
     const lotSize = riskAmount / dollarRiskPerLot;
-    const positionValue = lotSize * 100000 * entry;
+    
+    // Position size: for 0.01 lot = 1,000 units, so multiply by 1,000
+    const positionValue = (lotSize * 1000) * entry;
 
     // Generate recommendation
     let recommendation = "";

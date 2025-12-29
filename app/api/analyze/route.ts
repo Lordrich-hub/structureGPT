@@ -10,6 +10,10 @@ const MAX_SIZE = 8 * 1024 * 1024; // 8MB
 
 export async function POST(req: Request) {
   try {
+    // Debug: log environment
+    console.log("[ANALYZE] API Key present:", !!process.env.OPENAI_API_KEY);
+    console.log("[ANALYZE] API Key length:", process.env.OPENAI_API_KEY?.length || 0);
+
     const contentType = req.headers.get("content-type") || "";
 
     // Handle direct chart state submission (from manual input)
