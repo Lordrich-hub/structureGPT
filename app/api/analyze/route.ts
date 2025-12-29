@@ -64,6 +64,7 @@ export async function POST(req: Request) {
         const base64 = Buffer.from(await f.arrayBuffer()).toString("base64");
         const imageUrl = `data:${f.type};base64,${base64}`;
 
+        console.log("[ANALYZE] Calling OpenAI API...");
         const response = await openai.chat.completions.create({
           model: "gpt-4o",
           messages: [
@@ -79,6 +80,7 @@ export async function POST(req: Request) {
           response_format: { type: "json_object" },
           max_tokens: 2000,
         });
+        console.log("[ANALYZE] OpenAI API call successful");
 
         const text = response.choices[0]?.message?.content;
         if (!text) {
@@ -95,7 +97,12 @@ export async function POST(req: Request) {
         
         chartStates.push(parsed as ChartState);
       } catch (fileError: any) {
-        console.error(`Error processing file ${f.name}:`, fileError?.message);
+        console.error(`Error processing file ${f.name}:`, {
+          message: fileError?.message,
+          status: fileError?.status,
+          type: fileError?.type,
+          code: fileError?.code,
+        });
         throw fileError;
       }
     }
